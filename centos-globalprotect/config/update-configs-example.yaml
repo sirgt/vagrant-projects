@@ -5,20 +5,20 @@
     blockinfile:
       path: '/etc/hosts'
       block: |
-        10.7.9.118          release.sjc.host.com
-        10.5.82.241         release.atl.host.com
-        10.10.82.10         release.pdx.host.com
-        10.30.82.10         release.iad.host.com
-        10.5.133.21         release.dca.host.com
-        10.5.80.77          lbl553.atl.host.com
-        10.5.80.87          lbl554.atl.host.com
-        10.7.80.24          lbl701a.sjc.host.com
-        10.7.80.23          lbl702b.sjc.host.com
-        205.189.102.246     panvpn.host.com
-        10.7.82.72          lbl721.sjc.host.com
-        10.7.83.60          mgt718.sjc.host.com
-        10.7.82.249         lbl730.sjc.host.com
-        10.7.82.250         lbl731.sjc.host.com
+        10.0.9.8           release.host.com
+        10.0.82.7          release.host.com
+        10.10.82.5         release.host.com
+        10.30.82.6         release.host.com
+        10.0.133.22        release.host.com
+        10.0.1.77          a53.host.com
+        10.0.1.87          a54.host.com
+        10.0.2.24          a71.host.com
+        10.0.2.23          a70.host.com
+        10.9.0.1           vpn.host.com
+        10.0.32.72         a72.host.com
+        10.0.33.60         mgt78.host.com
+        10.0.32.249        a70.host.com
+        10.0.32.250        a79.host.com
   
   - name: Create ssh config folder
     file:
