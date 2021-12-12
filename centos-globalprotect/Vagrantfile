@@ -1,0 +1,47 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "centos/7"
+  config.vm.hostname = "centos-globalprotect-vpn"
+  # Replace this with the netwok interface to bridge  
+  config.vm.network "public_network", bridge: "en0: Wi-Fi (Wireless)"
+
+  config.vm.provider "virtualbox" do |vb|
+    #vb.gui = true
+    vb.memory = 512
+    vb.name = "centos-globalprotect-vpn"
+    vb.cpus = 1
+  end
+
+  config.vm.provision "shell", inline: <<-SHELL
+    echo vagrant ALL=NOPASSWD:ALL > /etc/sudoers.d/vagrant
+  SHELL
+
+  if Vagrant.has_plugin?("vagrant-vbguest")
+    config.vbguest.auto_update = false
+  else
+    config.vagrant.plugins = "vagrant-vbguest"
+  end
+
+  # Upgrade system and install packages needed 
+  config.vm.provision "shell", inline: <<-SHELL
+    yum makecache
+    yum update -y
+    yum group install -y "Development Tools" --setopt=group_package_types=mandatory,default,optional
+    yum install -y epel-release; 
+    sudo sed -i "s/metalink=https/metalink=http/" /etc/yum.repos.d/epel.repo
+    yum install -y git ansible wget vim curl nmap bind-utils htop colordiff python-pip python-virtualenv jq
+  SHELL
+  
+  # Copy configuration files
+  config.vm.provision "file", source: "./config", destination: "$HOME/host-config"
+  config.vm.provision "file", source: "./files", destination: "$HOME/host-files"
+
+  # Configure virtual machine
+  config.vm.provision "ansible_local" do |ansible|
+    ansible.playbook = "/home/vagrant/host-config/update-configs.yaml"
+    ansible.limit = "all"
+    ansible.verbose = "v"
+  end  
+end

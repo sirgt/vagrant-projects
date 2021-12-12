@@ -1,0 +1,42 @@
+- hosts: all
+  become: yes
+  tasks:
+  - name: install packages
+    package:
+      name: 
+        - glibc.i686
+        - libstdc++.i686
+        - git 
+        - wget 
+        - vim 
+        - curl 
+        - htop 
+        - tmux
+      state: present
+
+  - name: Add the user 'csgo'
+    user:
+      name: csgo
+      comment: CSGO user
+
+  - name: Creates 'steam' directory
+    file:
+      path: /home/csgo/steam
+      state: directory
+      owner: 'csgo'
+      group: 'csgo'
+
+  - name: Download steam CMD
+    get_url:
+      url: https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz
+      dest: /home/csgo/
+      mode: '0644'
+      owner: 'csgo'
+      group: 'csgo'
+
+  - name: Extract steamcmd tar file
+    unarchive:
+      src: /home/csgo/steamcmd_linux.tar.gz
+      dest: /home/csgo/steam/
+      owner: 'csgo'
+      group: 'csgo'

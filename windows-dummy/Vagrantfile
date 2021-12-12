@@ -1,0 +1,36 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  # The most common configuration options are documented and commented below.
+  # For a complete reference, please see the online documentation at
+  # https://docs.vagrantup.com.
+
+  config.vm.box = "gusztavvargadr/windows-10"
+  config.vm.box_version = "2004.0.2012"
+  config.vm.hostname = "Lazarus"
+  #config.vm.synced_folder "~/OneDrive - PayPal/", "/host-one-drive"
+  #config.vm.synced_folder "~/Downloads", "/host-downloads"
+  #config.vm.synced_folder "~/Projects", "/host-projects"
+
+  # Network Config
+  #config.vm.network "public_network", bridge: "en5: Belkin USB-C LAN"
+  
+  config.vm.provider "virtualbox" do |vb|
+  # Display the VirtualBox GUI when booting the machine
+    vb.gui = true
+  # Customize the amount of memory on the VM:
+    #vb.memory = "8192"
+    vb.memory = "4096"
+    #vb.cpus = "4"
+    vb.cpus = "2"
+    vb.customize ["storageattach", :id, 
+                "--storagectl", "IDE Controller", 
+                "--port", "0", "--device", "1", 
+                "--type", "dvddrive", 
+                "--medium", "emptydrive"]    
+    vb.customize ["modifyvm", :id, "--vram", "128"]
+    vb.customize ["modifyvm", :id, "--accelerate3d", "on"]
+    vb.customize ["modifyvm", :id, "--graphicscontroller", "vboxsvga"]
+  end
+end

@@ -1,0 +1,45 @@
+- hosts: all
+  become: yes
+  tasks:
+  - name: Update /etc/hosts
+    blockinfile:
+      path: '/etc/hosts'
+      block: |
+        10.7.9.118          release.sjc.xoom.com
+        10.5.82.241         release.atl.xoom.com
+        10.10.82.10         release.pdx.xoom.com
+        10.30.82.10         release.iad.xoom.com
+        10.5.133.21         release.dca.xoom.com
+        10.5.80.77          lbl553.atl.xoom.com
+        10.5.80.87          lbl554.atl.xoom.com
+        10.7.80.24          lbl701a.sjc.xoom.com
+        10.7.80.23          lbl702b.sjc.xoom.com
+        205.189.102.246     panvpn.xoom.com
+        10.7.82.72          lbl721.sjc.xoom.com
+        10.7.83.60          mgt718.sjc.xoom.com
+        10.7.82.249         lbl730.sjc.xoom.com
+        10.7.82.250         lbl731.sjc.xoom.com
+  
+  - name: Create ssh config folder
+    file:
+      path: /home/vagrant/.ssh
+      state: directory
+
+  - name: Create ssh config file
+    file: 
+      path: /home/vagrant/.ssh/config
+      state: touch
+
+  - name: Update SSH config file
+    blockinfile:
+      path: '/home/vagrant/.ssh/config'
+      block: |
+        Host release.*.xoom.com
+          User REPLACE-WITH-USERNAME
+        Host mgt*.*.xoom.com
+          User REPLACE-WITH-USERNAME
+          
+  - name: Install GlobalProtect vpn client
+    yum: 
+      name: /home/vagrant/host-files/GlobalProtect_rpm-5.0.5.0-11.rpm
+      state: present

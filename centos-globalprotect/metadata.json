@@ -1,0 +1,6 @@
+{
+    "name": "centos-globalprotect",
+    "version": "1.0.0",
+    "summary": "CentOs virtual machine with Globalprotect",
+    "license": "MIT"
+}

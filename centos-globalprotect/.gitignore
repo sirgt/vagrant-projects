@@ -1,0 +1,4 @@
+.vagrant/
+*.log
+*.box
+update-configs.yaml
